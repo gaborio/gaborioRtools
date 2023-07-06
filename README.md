@@ -6,7 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This is my personal package with a bunch of useful functions …
+This is my personal package with a bunch of useful functions for data
+wrangling and analysis
 
 ## Installation
 
@@ -42,6 +43,10 @@ library(gaborioRtools)
 #> Loading required package: sysfonts
 #> 
 #> Loading required package: showtextdb
+#> 
+#> This is version 0.1.0 of gaborioRtools.
+#>                         By Gabriel N. Camargo-Toledo (c)
+#>                         This is just a few misc things I have written
 ## basic recode_100 function
 # TODO: include data to package so example works
 # cols_values <- list(

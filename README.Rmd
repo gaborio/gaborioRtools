@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-This is my personal package with a bunch of useful functions ...
+This is my personal package with a bunch of useful functions for data wrangling and analysis
 
 ## Installation
 

@@ -1,0 +1,35 @@
+Package: gaborioRtools
+Type: Package
+Title: Miscellaneous Tools for Survey Data Management and Analysis
+Version: 0.1.0
+Author: Gabriel N. Camargo-Toledo
+Maintainer: Gabriel N. Camargo-Toledo <gabriel.n.c.t182@gmail.com>
+Description: This package includes several functions that help data analysis and management. 
+    Will be used on polariApp instead of using Sensata's packages.
+Depends:
+    R (>= 4.1.0),
+    tidyverse (>= 2.0.0),
+    labelled (>= 2.7.0),
+    showtext (>= 0.9)
+Imports:
+    tidyverse,
+    labelled,
+    splitstackshape,
+    jtools,
+    interactions,
+    questionr,
+    showtext,
+    sysfonts
+Suggests:
+    plyr,
+    beepr,
+    knitr,
+    testthat (>= 3.0.0),
+    rmarkdown
+License: GPL (>= 3)
+Encoding: UTF-8
+URL: https://github.com/gaborio/gaborioRtools
+BugReports: https://github.com/gaborio/gaborioRtools/issues
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 7.2.3

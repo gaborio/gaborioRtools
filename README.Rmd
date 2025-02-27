@@ -2,7 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -18,34 +17,80 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-This is my personal package with a bunch of useful functions for data wrangling and analysis
+This is a personal package with useful functions for data wrangling, analysis, and teaching R programming, specifically designed for quantitative methods courses in International Relations at Javeriana University.
+
+## Features
+
+- **Data Management Functions**: Tools for cleaning, recoding, and restructuring data
+- **Analysis Functions**: Statistical utilities like summary_se for enhanced statistical summaries
+- **Teaching Materials**: R Markdown documents for classes and functions to easily open them
 
 ## Installation
 
 You can install the development version of gaborioRtools from [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("devtools")
+```{r eval=FALSE}
+# Install devtools if you haven't already
+install.packages("devtools")
+
+# Install the package
 devtools::install_github("gaborio/gaborioRtools")
 ```
 
-## Example
+Alternatively, you can use the provided installation script:
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(gaborioRtools)
-## basic recode_100 function
-# TODO: include data to package so example works
-# cols_values <- list(
-#   EMO_11 = c("5", "6. Positiva"),
-#   PAF_11 = c("5", "6. Honestos"),
-#   PAF_14 = c("5", "6. Solidarios"),
-#   PAF_03 = c("4", "5. De acuerdo"),
-#   PAF_04 = c("4", "5. De acuerdo"),
-#   PAF_08 = c("Smiling", "Very happy")
-#   )
-# for (col in names(cols_values)) {
-#   pol_data <- recode_100(pol_data, col, cols_values[[col]])
-#   }
+```{r eval=FALSE}
+# Download and run the installation script
+source("https://raw.githubusercontent.com/gaborio/gaborioRtools/main/install_gaborioRtools.R")
 ```
+
+## Using the Class Materials
+
+This package includes R Markdown documents for teaching R programming. You can open them with:
+
+```{r eval=FALSE}
+library(gaborioRtools)
+
+# Open Class 5 materials (Introduction to R - Part 1)
+open_class_doc(5)
+
+# Open Class 6 materials (Introduction to R - Part 2)
+open_class_doc(6)
+```
+
+## Examples
+
+Here are some examples of the data management functions:
+
+```{r eval=FALSE}
+library(gaborioRtools)
+
+# Recode values to 0-100 scale
+cols_values <- list(
+  EMO_11 = c("5", "6. Positiva"),
+  PAF_11 = c("5", "6. Honestos")
+)
+for (col in names(cols_values)) {
+  data <- recode_100(data, col, cols_values[[col]])
+}
+
+# Convert percentages to proportions
+proportions <- divide_by_x(percentages, 100)
+
+# Scale values to 0-100 range
+scores_100 <- from_0_to_100(raw_scores)
+
+# Filter columns that have at least one non-NA value
+clean_data <- data %>% select(where(not_all_na))
+```
+
+## Dependencies
+
+This package requires several R packages, including:
+
+- tidyverse, haven, readxl, knitr
+- jtools, interactions, stargazer
+- labelled, showtext, summarytools
+- And more (see DESCRIPTION file)
+
+These dependencies will be installed automatically when you install the package.

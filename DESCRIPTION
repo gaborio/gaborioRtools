@@ -5,7 +5,8 @@ Version: 0.1.0
 Author: Gabriel N. Camargo-Toledo
 Maintainer: Gabriel N. Camargo-Toledo <gabriel.n.c.t182@gmail.com>
 Description: This package includes several functions that help data analysis and management. 
-    Will be used on polariApp instead of using Sensata's packages.
+    Tools for quantitative methods in International Relations at Javeriana University.
+    Also includes educational materials for R programming.
 Depends:
     R (>= 4.1.0),
     tidyverse (>= 2.0.0),
@@ -16,16 +17,26 @@ Imports:
     labelled,
     splitstackshape,
     jtools,
-    interactions,
     questionr,
     showtext,
-    sysfonts
+    sysfonts,
+    haven,
+    readxl,
+    knitr,
+    pastecs,
+    sandwich,
+    rmarkdown
 Suggests:
     plyr,
     beepr,
-    knitr,
     testthat (>= 3.0.0),
-    rmarkdown
+    mockery,
+    interactions,
+    stargazer,
+    summarytools,
+    nycflights13,
+    dagitty,
+    huxtable
 License: GPL (>= 3)
 Encoding: UTF-8
 URL: https://github.com/gaborio/gaborioRtools

@@ -1,12 +1,12 @@
 Package: gaborioRtools
 Type: Package
 Title: Miscellaneous Tools for Survey Data Management and Analysis
-Version: 0.1.0
+Version: 1.0.0
 Author: Gabriel N. Camargo-Toledo
 Maintainer: Gabriel N. Camargo-Toledo <gabriel.n.c.t182@gmail.com>
-Description: This package includes several functions that help data analysis and management. 
-    Tools for quantitative methods in International Relations at Javeriana University.
-    Also includes educational materials for R programming.
+Description: This package includes several functions that help data analysis and management, 
+    tools for the quantitative methods in International Relations at Javeriana University,
+    and also includes educational materials for R programming for that class.
 Depends:
     R (>= 4.1.0),
     tidyverse (>= 2.0.0),
@@ -43,4 +43,4 @@ URL: https://github.com/gaborio/gaborioRtools
 BugReports: https://github.com/gaborio/gaborioRtools/issues
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2

@@ -3,20 +3,63 @@
 # Created by: Gabriel N. Camargo-Toledo
 # Modified on: Feb 27, 2025
 
-# Check system type
+# Check system type and dependencies
 is_windows <- Sys.info()["sysname"] == "Windows"
 is_mac <- Sys.info()["sysname"] == "Darwin"
 is_linux <- Sys.info()["sysname"] == "Linux"
 
-# Display system dependency message if needed
+# Check system type and dependencies
+is_windows <- Sys.info()["sysname"] == "Windows"
+is_mac <- Sys.info()["sysname"] == "Darwin"
+is_linux <- Sys.info()["sysname"] == "Linux"
+
+# Function to check system dependencies on Linux
+check_linux_deps <- function() {
+  cat("Checking system dependencies...\n")
+
+  # Check V8
+  v8_check <- try(system("ldconfig -p | grep libv8", intern = TRUE), silent = TRUE)
+  has_v8 <- !inherits(v8_check, "try-error") && length(v8_check) > 0
+
+  # Check Magick++
+  magick_check <- try(system("ldconfig -p | grep Magick++", intern = TRUE), silent = TRUE)
+  has_magick <- !inherits(magick_check, "try-error") && length(magick_check) > 0
+
+  if (!has_v8 || !has_magick) {
+    cat("Missing system dependencies detected:\n")
+    if (!has_v8) cat("  - libv8-dev (required for dagitty)\n")
+    if (!has_magick) cat("  - libmagick++-dev (required for summarytools)\n")
+
+    cat("\nYou need to install these dependencies by running this command in your terminal:\n")
+    install_cmd <- "sudo apt-get update && sudo apt-get install -y"
+    if (!has_v8) install_cmd <- paste(install_cmd, "libv8-dev")
+    if (!has_magick) install_cmd <- paste(install_cmd, "libmagick++-dev")
+    cat(install_cmd, "\n\n")
+
+    cat("Do you want to continue with the installation anyway? (y/n): ")
+    answer <- tolower(readline())
+
+    if (answer != "y" && answer != "yes") {
+      cat("\nInstallation aborted. Please install the required dependencies and try again.\n")
+      stop("Installation aborted due to missing system dependencies", call. = FALSE)
+    }
+
+    cat("\nContinuing installation without all system dependencies.\n")
+    cat("Some features may not work until you install the required dependencies.\n\n")
+  } else {
+    cat("All system dependencies are already installed!\n\n")
+  }
+}
+
+# Check dependencies based on OS
 if (is_linux) {
-  cat("NOTE: Some packages require system libraries to be installed.\n")
-  cat("If you encounter errors, you may need to run the following command in the terminal:\n")
-  cat("sudo apt-get install libv8-dev libmagick++-dev\n\n")
+  check_linux_deps()
 } else if (is_mac) {
   cat("NOTE: Some packages require system libraries to be installed.\n")
   cat("If you encounter errors, you may need to run the following in the terminal:\n")
   cat("brew install v8 imagemagick\n\n")
+} else if (is_windows) {
+  cat("On Windows, dependencies should be handled by binary packages.\n\n")
 }
 
 # Core required packages

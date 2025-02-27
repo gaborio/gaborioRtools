@@ -16,8 +16,8 @@
 
 open_class_doc <- function(class_number, render = TRUE) {
   # Check if class_number is valid
-  if (!class_number %in% c(5, 6)) {
-    stop("Class number must be 5 or 6")
+  if (!class_number %in% seq(5:16)) {
+    stop("Class number must be between 5 to 16")
   }
 
   # Find package installation path to locate the Rmd files

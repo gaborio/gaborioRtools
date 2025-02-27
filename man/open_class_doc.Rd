@@ -4,12 +4,12 @@
 \alias{open_class_doc}
 \title{Open Class Document}
 \usage{
-open_class_doc(class_number, render = TRUE)
+open_class_doc(class_number, render = FALSE)
 }
 \arguments{
 \item{class_number}{Number of the class to open (e.g., 5 for clase5.Rmd)}
 
-\item{render}{Whether to re-render the document before opening. Default is TRUE.}
+\item{render}{Whether to re-render the document before opening. Default is FALSE}
 }
 \value{
 Opens the HTML document in a web browser

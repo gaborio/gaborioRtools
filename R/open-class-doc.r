@@ -14,7 +14,7 @@
 #' @importFrom utils browseURL
 #' @export
 
-open_class_doc <- function(class_number, render = TRUE) {
+open_class_doc <- function(class_number, render = FALSE) {
   # Check if class_number is valid
   if (!class_number %in% 5:16) {  # Changed from seq(5:16) to 5:16
     stop("Class number must be between 5 to 16")

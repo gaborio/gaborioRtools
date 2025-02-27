@@ -25,15 +25,21 @@ check_system_deps <- function(quiet = FALSE) {
     return(TRUE)
   }
 
-  # List of dependencies to check
+  # List of dependencies to check with alternative package names
   deps <- list(
     v8 = list(
-      check_cmd = "ldconfig -p | grep libv8",
-      apt_pkg = "libv8-dev"
+      check_cmd = "ldconfig -p | grep -E 'libv8|libnode'",
+      alt_check_cmds = c(
+        "dpkg -l | grep -E 'libv8-dev|libnode-dev'"
+      ),
+      apt_pkgs = c("libv8-dev", "libnode-dev")
     ),
     magick = list(
       check_cmd = "ldconfig -p | grep Magick++",
-      apt_pkg = "libmagick++-dev"
+      alt_check_cmds = c(
+        "dpkg -l | grep -E 'libmagick\\+\\+-dev|graphicsmagick-libmagick-dev-compat'"
+      ),
+      apt_pkgs = c("libmagick++-dev", "graphicsmagick-libmagick-dev-compat")
     )
   )
 
@@ -43,11 +49,22 @@ check_system_deps <- function(quiet = FALSE) {
     dep <- deps[[dep_name]]
     if (!quiet) message("Checking for system dependency: ", dep_name)
 
-    # Run the check command
+    # Try primary check command
     check_result <- try(system(dep$check_cmd, intern = TRUE), silent = TRUE)
+    found <- !inherits(check_result, "try-error") && length(check_result) > 0
 
-    # If check failed or returned nothing, the dependency is missing
-    if (inherits(check_result, "try-error") || length(check_result) == 0) {
+    # If primary check fails, try alternative checks
+    if (!found && !is.null(dep$alt_check_cmds)) {
+      for (alt_cmd in dep$alt_check_cmds) {
+        alt_result <- try(system(alt_cmd, intern = TRUE), silent = TRUE)
+        if (!inherits(alt_result, "try-error") && length(alt_result) > 0) {
+          found <- TRUE
+          break
+        }
+      }
+    }
+
+    if (!found) {
       missing_deps[[dep_name]] <- dep
       if (!quiet) message("  - Missing: ", dep_name)
     } else {
@@ -63,14 +80,32 @@ check_system_deps <- function(quiet = FALSE) {
 
   # We found missing dependencies - provide instructions
   if (!quiet) {
-    apt_pkgs <- sapply(missing_deps, function(dep) dep$apt_pkg)
     message("\nThe following system dependencies are missing:")
-    message(paste(" -", apt_pkgs, collapse = "\n"))
 
-    message("\nTo install them, run the following command in your terminal:")
-    message("sudo apt update && sudo apt install -y ", paste(apt_pkgs, collapse = " "))
+    # For each missing dependency
+    for (dep_name in names(missing_deps)) {
+      dep <- missing_deps[[dep_name]]
+      message(paste0(" - ", dep_name, " (install one of: ", paste(dep$apt_pkgs, collapse = ", "), ")"))
+    }
+
+    # Collect all package options
+    all_pkg_options <- unlist(lapply(missing_deps, function(dep) dep$apt_pkgs))
+    first_options <- sapply(missing_deps, function(dep) dep$apt_pkgs[1])
+
+    message("\nTo install dependencies, run one of these commands in your terminal:")
+
+    # Option 1: Try the first package for each dependency
+    message("\nOption 1 (most common packages):")
+    message("sudo apt-get update && sudo apt-get install -y ", paste(first_options, collapse = " "))
+
+    # Option 2: Alternative packages if option 1 doesn't work
+    if (length(all_pkg_options) > length(first_options)) {
+      message("\nOption 2 (if Option 1 doesn't work):")
+      message("sudo apt-get update && sudo apt-get install -y ", paste(all_pkg_options, collapse = " "))
+    }
 
     message("\nAfter installing the dependencies, restart R and try again.")
+    message("Note: On your system, it appears 'libnode-dev' may be the correct package for V8.")
   }
 
   return(FALSE)

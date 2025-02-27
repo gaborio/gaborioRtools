@@ -1,7 +1,7 @@
 test_that("open_class_doc validates input", {
-  expect_error(open_class_doc(7), "Class number must be 5 or 6")
-  expect_error(open_class_doc(0), "Class number must be 5 or 6")
-  expect_error(open_class_doc("five"), "Class number must be 5 or 6")
+  expect_error(open_class_doc(7), "Class number must be between 5 to 16")
+  expect_error(open_class_doc(0), "Class number must be between 5 to 16")
+  expect_error(open_class_doc("five"), "Class number must be between 5 to 16")
 })
 
 # We can't easily test the actual rendering and opening, but we can test

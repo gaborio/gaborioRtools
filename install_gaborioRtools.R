@@ -17,23 +17,44 @@ is_linux <- Sys.info()["sysname"] == "Linux"
 check_linux_deps <- function() {
   cat("Checking system dependencies...\n")
 
-  # Check V8
-  v8_check <- try(system("ldconfig -p | grep libv8", intern = TRUE), silent = TRUE)
+  # Check for V8 (either libv8 or libnode)
+  v8_check <- try(system("ldconfig -p | grep -E 'libv8|libnode'", intern = TRUE), silent = TRUE)
   has_v8 <- !inherits(v8_check, "try-error") && length(v8_check) > 0
+
+  if (!has_v8) {
+    # Try an alternative check with dpkg
+    v8_dpkg_check <- try(system("dpkg -l | grep -E 'libv8-dev|libnode-dev'", intern = TRUE), silent = TRUE)
+    has_v8 <- !inherits(v8_dpkg_check, "try-error") && length(v8_dpkg_check) > 0
+  }
 
   # Check Magick++
   magick_check <- try(system("ldconfig -p | grep Magick++", intern = TRUE), silent = TRUE)
   has_magick <- !inherits(magick_check, "try-error") && length(magick_check) > 0
 
+  if (!has_magick) {
+    # Try an alternative check with dpkg
+    magick_dpkg_check <- try(system("dpkg -l | grep -E 'libmagick\\+\\+-dev|graphicsmagick-libmagick-dev-compat'", intern = TRUE), silent = TRUE)
+    has_magick <- !inherits(magick_dpkg_check, "try-error") && length(magick_dpkg_check) > 0
+  }
+
   if (!has_v8 || !has_magick) {
     cat("Missing system dependencies detected:\n")
-    if (!has_v8) cat("  - libv8-dev (required for dagitty)\n")
-    if (!has_magick) cat("  - libmagick++-dev (required for summarytools)\n")
+
+    # On Ubuntu, we need to recommend the correct packages
+    is_ubuntu <- file.exists("/etc/lsb-release") &&
+      grepl("Ubuntu", readLines("/etc/lsb-release", warn = FALSE)[1])
+
+    # Determine the right packages based on the system
+    v8_pkg <- if(is_ubuntu) "libnode-dev" else "libv8-dev"
+    magick_pkg <- "libmagick++-dev"
+
+    if (!has_v8) cat("  - ", v8_pkg, " (required for dagitty)\n")
+    if (!has_magick) cat("  - ", magick_pkg, " (required for summarytools)\n")
 
     cat("\nYou need to install these dependencies by running this command in your terminal:\n")
     install_cmd <- "sudo apt-get update && sudo apt-get install -y"
-    if (!has_v8) install_cmd <- paste(install_cmd, "libv8-dev")
-    if (!has_magick) install_cmd <- paste(install_cmd, "libmagick++-dev")
+    if (!has_v8) install_cmd <- paste(install_cmd, v8_pkg)
+    if (!has_magick) install_cmd <- paste(install_cmd, magick_pkg)
     cat(install_cmd, "\n\n")
 
     cat("Do you want to continue with the installation anyway? (y/n): ")

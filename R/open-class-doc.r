@@ -21,7 +21,7 @@ open_class_doc <- function(class_number, render = FALSE) {
   }
 
   # Find package installation path to locate the Rmd files
-  pkg_path <- system.file("inst/rmd", package = "gaborioRtools")
+  pkg_path <- system.file("rmd", package = "gaborioRtools")
 
   # Check if the directory exists
   if (pkg_path == "") {

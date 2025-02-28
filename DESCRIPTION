@@ -44,3 +44,5 @@ BugReports: https://github.com/gaborio/gaborioRtools/issues
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
+RdMacros: Rd, RMarkdown
+
